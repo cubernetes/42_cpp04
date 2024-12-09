@@ -1,0 +1,13 @@
+# build artefacts
+a.out
+
+# objects
+obj/
+
+# clangd stuff
+.cache/
+compile_commands.json
+
+# other sources
+test*.cpp
+test*.c
