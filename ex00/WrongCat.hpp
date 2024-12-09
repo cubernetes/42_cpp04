@@ -26,11 +26,7 @@ public:
 	void makeSound() const /* override */;
 };
 
-template <>
-inline string repr(const WrongCat& value) {
-	return value.repr();
-}
-
+template <> inline string repr(const WrongCat& value) { return value.repr(); }
 void swap(WrongCat&, WrongCat&) /* noexcept */;
 ostream& operator<<(ostream&, const WrongCat&);
 // </GENERATED>

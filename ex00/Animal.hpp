@@ -31,11 +31,7 @@ protected:
 	string _type;
 };
 
-template <>
-inline string repr(const Animal& value) {
-	return value.repr();
-}
-
+template <> inline string repr(const Animal& value) { return value.repr(); }
 void swap(Animal&, Animal&) /* noexcept */;
 ostream& operator<<(ostream&, const Animal&);
 // </GENERATED>

@@ -26,11 +26,7 @@ public:
 	void makeSound() const /* override */;
 };
 
-template <>
-inline string repr(const Dog& value) {
-	return value.repr();
-}
-
+template <> inline string repr(const Dog& value) { return value.repr(); }
 void swap(Dog&, Dog&) /* noexcept */;
 ostream& operator<<(ostream&, const Dog&);
 // </GENERATED>
