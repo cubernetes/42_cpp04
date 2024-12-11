@@ -59,8 +59,8 @@ SRC += main.cpp
 SRC += Animal.cpp
 SRC += Dog.cpp
 SRC += Cat.cpp
-SRC += WrongAnimal.cpp
-SRC += WrongCat.cpp
+SRC += Brain.cpp
+SRC += repr.cpp
 
 # object vars
 OBJ := $(SRC:.$(EXT)=.o)

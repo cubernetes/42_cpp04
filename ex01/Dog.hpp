@@ -6,6 +6,8 @@
 
 #include "repr.hpp" /* repr<T> */
 #include "Animal.hpp"
+#include "Brain.hpp"
+#include "helper.hpp"
 
 using std::string;
 using std::ostream;
@@ -16,6 +18,8 @@ public:
 	~Dog(); // consider virtual if it's a base class
 	Dog();
 	explicit Dog(const string&);
+	explicit Dog(const char*);
+	Dog(const string&, const Brain&);
 	Dog(const Dog&);
 	Dog& operator=(Dog);
 	void swap(Dog&);
@@ -24,6 +28,14 @@ public:
 	// </generated>
 
 	void makeSound() const /* override */;
+	const Brain* getBrain() const;
+
+	template <typename T>
+	Dog(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
+private:
+	Brain* _brain;
+	unsigned int _id;
+	static unsigned int _id_cntr;
 };
 
 template <> inline string repr(const Dog& value) { return value.repr(); }

@@ -5,6 +5,7 @@
 #include <iostream> /* std::ostream */
 
 #include "repr.hpp" /* repr<T> */
+#include "helper.hpp"
 
 using std::string;
 using std::ostream;
@@ -14,19 +15,23 @@ public:
 	// partly <generated>
 	~Brain(); // consider virtual if it's a base class
 	Brain();
-	explicit Brain(const string*&); // TODO IS THIS RIGHT?
+	// explicit Brain(const string*);
 	Brain(const Brain&);
 	Brain& operator=(Brain);
 	void swap(Brain&);
 	string repr() const;
 	operator string() const;
 
-	const string& get_ideas(unsigned int idx) const;
-
-	void set_ideas(unsigned int idx, const string&);
 	// </generated>
+	const string& get_idea(unsigned int) const;
+	void set_idea(unsigned int idx, const string&);
+	void delete_idea(unsigned int idx);
+
+	template <typename T>
+	Brain(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 private:
-	static const int _n_ideas = 100;
+	static const string _empty_thought;
+	static const int _n_ideas = 2;
 	string _ideas[_n_ideas];
 };
 

@@ -15,6 +15,7 @@ public:
 	virtual ~Animal(); // consider virtual if it's a base class
 	Animal();
 	explicit Animal(const string&);
+	explicit Animal(const char*);
 	Animal(const Animal&);
 	Animal& operator=(Animal);
 	void swap(Animal&);
@@ -27,6 +28,11 @@ public:
 	// </generated>
 	
 	virtual void makeSound() const;
+
+	// ######### In the animal class, we actually want to allow constructors with differing types!
+	// ######### Reason being: an animal can be constructed be a derived type!
+	// template <typename T>
+	// Animal(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 protected:
 	string _type;
 };

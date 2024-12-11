@@ -6,6 +6,7 @@
 #include "repr.hpp"
 #include "Animal.hpp"
 #include "Cat.hpp"
+#include "Brain.hpp"
 
 using std::cout;
 using std::swap;
@@ -14,14 +15,16 @@ using std::ostream;
 using std::stringstream;
 
 // De- & Constructors
-Cat::~Cat() { cout << "~Cat()\n"; }
-Cat::Cat() : Animal("Cat") { cout << "Cat()\n"; }
-Cat::Cat(const string& type) : Animal(type) { cout << *this << '\n'; }
-Cat::Cat(const Cat& other) : Animal(other) { cout << "Cat(" << ::repr(other) << ")\n"; }
+Cat::~Cat() { cout << ANSI_PUNCT "~" << *this << '\n'; delete _brain; }
+Cat::Cat() : Animal("Cat"), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "() -> " << *this << '\n'; }
+Cat::Cat(const string& type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Cat::Cat(const char* type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Cat::Cat(const string& type, const Brain& brain) : Animal(type), _brain(new Brain(brain)), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
+Cat::Cat(const Cat& other) : Animal(other), _brain(new Brain(*other._brain)), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
 
 // Copy-assignment operator (using copy-swap idiom)
 Cat& Cat::operator=(Cat other) /* noexcept */ {
-	cout << "Cat& Cat::operator=(" << ::repr(other) << ")\n";
+	cout << ANSI_KWRD "Cat" ANSI_PUNCT "& " ANSI_KWRD "Cat" ANSI_PUNCT "::" ANSI_FUNC "operator" ANSI_PUNCT "=(" << ::repr(other) << ANSI_PUNCT ")" ANSI_RST "\n";
 	::swap(*this, other);
 	return *this;
 }
@@ -29,11 +32,18 @@ Cat& Cat::operator=(Cat other) /* noexcept */ {
 // Generated member functions
 string Cat::repr() const {
 	stringstream out;
-	out << "Cat(" << ::repr(_type) << ")";
+	out << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(_type) << ANSI_PUNCT ", " << ::repr(*_brain) << ANSI_PUNCT ", " << ::repr(_id) << ANSI_PUNCT ")" ANSI_RST;
 	return out.str();
 }
 void Cat::swap(Cat& other) /* noexcept */ {
+	cout << ANSI_CMT "<Swapping *this:" ANSI_RST "\n";
+	cout << *this << '\n';
+	cout << ANSI_CMT "with the following object:" ANSI_RST "\n";
+	cout << other << '\n';
+	::swap(_id, other._id);
 	::swap(_type, other._type);
+	::swap(_brain, other._brain);
+	cout << ANSI_CMT "swap done>" ANSI_RST "\n";
 }
 Cat::operator string() const { return ::repr(*this); }
 
@@ -45,3 +55,7 @@ ostream& operator<<(ostream& os, const Cat& other) { return os << static_cast<st
 void Cat::makeSound() const {
 	cout << "MEOW MEOW MEO.. ME.. MEEE MEE LOOK AT MEE MEEEEOOW MEEOWWWW\n";
 }
+
+const Brain* Cat::getBrain() const { return _brain; }
+
+unsigned int Cat::_id_cntr = 0;

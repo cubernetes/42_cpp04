@@ -6,6 +6,8 @@
 
 #include "repr.hpp" /* repr<T> */
 #include "Animal.hpp"
+#include "Brain.hpp"
+#include "helper.hpp"
 
 using std::string;
 using std::ostream;
@@ -16,6 +18,8 @@ public:
 	~Cat(); // consider virtual if it's a base class
 	Cat();
 	explicit Cat(const string&);
+	explicit Cat(const char*);
+	Cat(const string&, const Brain&);
 	Cat(const Cat&);
 	Cat& operator=(Cat);
 	void swap(Cat&);
@@ -24,6 +28,14 @@ public:
 	// </generated>
 
 	void makeSound() const /* override */;
+	const Brain* getBrain() const;
+
+	template <typename T>
+	Cat(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
+private:
+	Brain* _brain;
+	unsigned int _id;
+	static unsigned int _id_cntr;
 };
 
 template <> inline string repr(const Cat& value) { return value.repr(); }
