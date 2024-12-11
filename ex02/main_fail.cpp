@@ -1,6 +1,6 @@
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 
 int main() {
-	Animal a;
+	AAnimal a;
 	return 0;
 }

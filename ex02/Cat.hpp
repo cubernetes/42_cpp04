@@ -5,14 +5,14 @@
 #include <iostream> /* std::ostream */
 
 #include "repr.hpp" /* repr<T> */
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 #include "Brain.hpp"
 #include "helper.hpp"
 
 using std::string;
 using std::ostream;
 
-class Cat : public Animal {
+class Cat : public AAnimal {
 public:
 	// <generated>
 	~Cat(); // consider virtual if it's a base class

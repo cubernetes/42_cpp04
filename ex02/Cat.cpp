@@ -4,7 +4,7 @@
 #include <sstream> /* std::stringstream */
 
 #include "repr.hpp"
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 #include "Cat.hpp"
 #include "Brain.hpp"
 
@@ -16,11 +16,11 @@ using std::stringstream;
 
 // De- & Constructors
 Cat::~Cat() { cout << ANSI_PUNCT "~" << *this << '\n'; delete _brain; }
-Cat::Cat() : Animal("Cat"), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "() -> " << *this << '\n'; }
-Cat::Cat(const string& type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
-Cat::Cat(const char* type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
-Cat::Cat(const string& type, const Brain& brain) : Animal(type), _brain(new Brain(brain)), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
-Cat::Cat(const Cat& other) : Animal(other), _brain(new Brain(*other._brain)), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Cat::Cat() : AAnimal("Cat"), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "() -> " << *this << '\n'; }
+Cat::Cat(const string& type) : AAnimal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Cat::Cat(const char* type) : AAnimal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Cat::Cat(const string& type, const Brain& brain) : AAnimal(type), _brain(new Brain(brain)), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
+Cat::Cat(const Cat& other) : AAnimal(other), _brain(new Brain(*other._brain)), _id(_id_cntr++) { cout << ANSI_KWRD "Cat" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
 
 // Copy-assignment operator (using copy-swap idiom)
 Cat& Cat::operator=(Cat other) /* noexcept */ {

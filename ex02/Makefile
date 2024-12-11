@@ -57,7 +57,7 @@ SRC :=
 vpath %.$(EXT) .
 # SRC += main_fail.cpp
 SRC += main.cpp
-SRC += Animal.cpp
+SRC += AAnimal.cpp
 SRC += Dog.cpp
 SRC += Cat.cpp
 SRC += Brain.cpp

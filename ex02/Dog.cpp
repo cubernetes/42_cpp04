@@ -4,7 +4,7 @@
 #include <sstream> /* std::stringstream */
 
 #include "repr.hpp"
-#include "Animal.hpp"
+#include "AAnimal.hpp"
 #include "Dog.hpp"
 #include "Brain.hpp"
 
@@ -16,11 +16,11 @@ using std::stringstream;
 
 // De- & Constructors
 Dog::~Dog() { cout << ANSI_PUNCT "~" << *this << '\n'; delete _brain; }
-Dog::Dog() : Animal("Dog"), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "() -> " << *this << '\n'; }
-Dog::Dog(const string& type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
-Dog::Dog(const char* type) : Animal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
-Dog::Dog(const string& type, const Brain& brain) : Animal(type), _brain(new Brain(brain)), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
-Dog::Dog(const Dog& other) : Animal(other), _brain(new Brain(*other._brain)), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Dog::Dog() : AAnimal("Dog"), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "() -> " << *this << '\n'; }
+Dog::Dog(const string& type) : AAnimal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Dog::Dog(const char* type) : AAnimal(type), _brain(new Brain()), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
+Dog::Dog(const string& type, const Brain& brain) : AAnimal(type), _brain(new Brain(brain)), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
+Dog::Dog(const Dog& other) : AAnimal(other), _brain(new Brain(*other._brain)), _id(_id_cntr++) { cout << ANSI_KWRD "Dog" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
 
 // Copy-assignment operator (using copy-swap idiom)
 Dog& Dog::operator=(Dog other) /* noexcept */ {
