@@ -4,7 +4,7 @@
 
 void repr_init() {
 	std::cout << ANSI_FG;
-	std::cout << "\x1b\x5b\x48\x1b\x5b\x32\x4a";
+	// std::cout << "\x1b\x5b\x48\x1b\x5b\x32\x4a";
 }
 
 void repr_done() {

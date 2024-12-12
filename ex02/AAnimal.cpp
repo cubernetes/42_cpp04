@@ -1,5 +1,5 @@
 // <GENERATED>
-#include <iostream> /* std::cout, std::swap, std::ostream */
+#include <iostream> /* std::cout, std::ostream */
 #include <string> /* std::string */
 #include <sstream> /* std::stringstream */
 
@@ -7,7 +7,6 @@
 #include "AAnimal.hpp"
 
 using std::cout;
-using std::swap;
 using std::string;
 using std::ostream;
 using std::stringstream;
@@ -19,7 +18,7 @@ AAnimal::AAnimal(const string& type) : _type(type) { cout << ANSI_KWRD "AAnimal"
 AAnimal::AAnimal(const char* type) : _type(type) { cout << ANSI_KWRD "AAnimal" ANSI_PUNCT "(" << ::repr(type) << ANSI_PUNCT ") -> " << *this << '\n'; }
 AAnimal::AAnimal(const AAnimal& other) : _type(other._type) { cout << ANSI_KWRD "AAnimal" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
 
-// Copy-assignment operator (using copy-swap idiom)
+// Copy-assignment operator
 AAnimal& AAnimal::operator=(const AAnimal& other) /* noexcept */ {
 	cout << ANSI_KWRD "AAnimal" ANSI_PUNCT "& " ANSI_KWRD "AAnimal" ANSI_PUNCT "::" ANSI_FUNC "operator" ANSI_KWRD "=(" << ::repr(other) << ANSI_KWRD ")" ANSI_RST "\n";
 	_type = other._type;
@@ -38,18 +37,9 @@ string AAnimal::repr() const {
 	out << ANSI_KWRD "AAnimal" ANSI_PUNCT "(" << ::repr(_type) << ANSI_PUNCT ")" ANSI_RST;
 	return out.str();
 }
-void AAnimal::swap(AAnimal& other) /* noexcept */ {
-	cout << ANSI_CMT "<Swapping *this:" ANSI_RST "\n";
-	cout << *this << '\n';
-	cout << ANSI_CMT "with the following object:" ANSI_RST "\n";
-	cout << other << '\n';
-	::swap(_type, other._type);
-	cout << ANSI_CMT "swap done>" ANSI_RST "\n";
-}
 AAnimal::operator string() const { return ::repr(*this); }
 
 // Generated free functions
-void swap(AAnimal& a, AAnimal& b) /* noexcept */ { a.swap(b); }
 ostream& operator<<(ostream& os, const AAnimal& other) { return os << static_cast<string>(other); }
 // </GENERATED>
 

@@ -18,7 +18,6 @@ public:
 	explicit AAnimal(const char*);
 	AAnimal(const AAnimal&);
 	AAnimal& operator=(const AAnimal&);
-	void swap(AAnimal&);
 	string repr() const;
 	operator string() const;
 
@@ -38,6 +37,5 @@ protected:
 };
 
 template <> inline string repr(const AAnimal& value) { return value.repr(); }
-void swap(AAnimal&, AAnimal&) /* noexcept */;
 ostream& operator<<(ostream&, const AAnimal&);
 // </GENERATED>
