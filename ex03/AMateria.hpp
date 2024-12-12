@@ -5,8 +5,8 @@
 #include <iostream> /* std::ostream */
 
 #include "repr.hpp" /* repr<T> */
-#include "helper.hpp"
 #include "ICharacter.hpp"
+class ICharacter;
 
 using std::string;
 using std::ostream;
@@ -14,7 +14,7 @@ using std::ostream;
 class AMateria {
 public:
 	// <generated>
-		~AMateria(); // destructor; consider virtual if it's a base class
+		virtual ~AMateria(); // destructor; consider virtual if it's a base class
 		AMateria(); // default constructor
 		explicit AMateria(const string&); // serializing constructor
 		AMateria(const AMateria&); // copy constructor
@@ -25,14 +25,11 @@ public:
 		const string& getType() const;
 
 		void setType(const string&);
-
-		template <typename T>
-		AMateria(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 	// </generated>
 	
 		virtual AMateria* clone() const = 0;
 		virtual void use(ICharacter& target);
-private:
+protected:
 	string _type;
 };
 

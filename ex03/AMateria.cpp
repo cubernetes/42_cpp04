@@ -13,7 +13,7 @@ using std::stringstream;
 
 // De- & Constructors
 AMateria::~AMateria() { cout << ANSI_PUNCT "~" << *this << '\n'; }
-AMateria::AMateria() : _type() { cout << ANSI_KWRD "AMateria" ANSI_PUNCT "() -> " << *this << '\n'; }
+AMateria::AMateria() : _type("Unformed Matter") { cout << ANSI_KWRD "AMateria" ANSI_PUNCT "() -> " << *this << '\n'; }
 AMateria::AMateria(const string& type) : _type(type) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
 AMateria::AMateria(const AMateria& other) : _type(other._type) { cout << ANSI_KWRD "AMateria" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n'; }
 
