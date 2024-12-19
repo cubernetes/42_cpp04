@@ -5,7 +5,6 @@
 #include <iostream> /* std::ostream */
 
 #include "repr.hpp" /* repr<T> */
-#include "helper.hpp"
 
 using std::string;
 using std::ostream;
@@ -26,9 +25,6 @@ public:
 	const string& get_idea(unsigned int) const;
 	void set_idea(unsigned int idx, const string&);
 	void delete_idea(unsigned int idx);
-
-	template <typename T>
-	Brain(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 private:
 	static const string _empty_thought;
 	static const int _n_ideas = 2;

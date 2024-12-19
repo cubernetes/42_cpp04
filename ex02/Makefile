@@ -7,7 +7,7 @@ NAME := a.out
 EXT := cpp
 
 # tools
-CXX := c++
+CXX := g++
 RM := /bin/rm -f
 MKDIR := /bin/mkdir -p
 
@@ -20,7 +20,7 @@ CFLAGS += -Wshadow
 CFLAGS += -pedantic
 CFLAGS += -Wconversion
 CFLAGS += -Wunreachable-code
-CFLAGS += -std=c++98
+# CFLAGS += -std=c++98
 CFLAGS += -Werror
 CFLAGS += -MMD
 

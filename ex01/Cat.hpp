@@ -7,7 +7,6 @@
 #include "repr.hpp" /* repr<T> */
 #include "Animal.hpp"
 #include "Brain.hpp"
-#include "helper.hpp"
 
 using std::string;
 using std::ostream;
@@ -29,9 +28,6 @@ public:
 
 	void makeSound() const /* override */;
 	const Brain* getBrain() const;
-
-	template <typename T>
-	Cat(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 private:
 	Brain* _brain;
 	unsigned int _id;
