@@ -15,6 +15,7 @@
 #define ANSI_FUNC   ANSI_FG ANSI_CSI "38;2;184;187;38"  "m"
 #define ANSI_NUM    ANSI_FG ANSI_CSI "38;2;211;134;155" "m"
 #define ANSI_VAR    ANSI_FG ANSI_CSI "38;2;235;219;178" "m"
+#define ANSI_PARAM  ANSI_FG ANSI_CSI "38;2;142;192;124" "m"
 #define ANSI_CMT    ANSI_FG ANSI_CSI "38;2;146;131;116" "m"
 
 using std::string;
@@ -29,9 +30,20 @@ inline string repr(const T& value) {
 }
 
 // repr template specializations (not escaping value atm)
+template <> inline string repr(const bool& value) { return string(ANSI_NUM) + (value ? "true" : "false"); }
 template <> inline string repr(const string& value) { return ANSI_STR "\"" + value + "\"" ANSI_PUNCT "s" ANSI_RST; }
 template <> inline string repr(const char* const& value) { return string(ANSI_STR "\"") + value + "\"" ANSI_STR; }
 template <> inline string repr(const char& value) { return string(ANSI_CHR "'") + value + "'" ANSI_RST; }
+template <typename T> inline string repr(const T* value) {
+	if (value)
+		return string(ANSI_KWRD "const" ANSI_PUNCT "&") + ::repr(*value);
+	return ANSI_PARAM "NULL";
+}
+template <typename T> inline string repr(T* value) {
+	if (value)
+		return string(ANSI_PUNCT "&") + ::repr(*value);
+	return ANSI_PARAM "NULL";
+}
 template <typename T> inline string repr(const T* value, unsigned int size) {
 	std::ostringstream oss;
 	oss << ANSI_PUNCT "{" ANSI_RST;

@@ -22,7 +22,7 @@ Ice::Ice(const Ice& other) : AMateria(other), _id(_id_cntr++) { cout << ANSI_KWR
 // Copy-assignment operator (using copy-swap idiom)
 Ice& Ice::operator=(Ice other) /* noexcept */ {
 	cout << ANSI_KWRD "Ice" ANSI_PUNCT "& " ANSI_KWRD "Ice" ANSI_PUNCT "::" ANSI_FUNC "operator" ANSI_PUNCT "=(" << ::repr(other) << ANSI_PUNCT ")" ANSI_RST "\n";
-	::swap(*this, other);
+	// ::swap(*this, other); // subject says "NO"
 	return *this;
 }
 
@@ -53,5 +53,5 @@ unsigned int Ice::_id_cntr = 0;
 AMateria* Ice::clone() const { return new Ice(*this); }
 
 void Ice::use(ICharacter& target) {
-	cout << "* shoots and ice bolt at " << target.getName() << "*\n";
+	cout << "* shoots an ice bolt at " << target.getName() << " *\n";
 }

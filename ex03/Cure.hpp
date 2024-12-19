@@ -1,5 +1,5 @@
 // <GENERATED>
-#pragma once /* Ice.hpp */
+#pragma once /* Cure.hpp */
 
 #include <string> /* std::string */
 #include <iostream> /* std::ostream */
@@ -10,15 +10,15 @@
 using std::string;
 using std::ostream;
 
-class Ice : public AMateria {
+class Cure : public AMateria {
 public:
 	// <generated>
-		~Ice(); // destructor; consider virtual if it's a base class
-		Ice(); // default constructor
-		explicit Ice(const string&); // serializing constructor
-		Ice(const Ice&); // copy constructor
-		Ice& operator=(Ice); // copy-assignment operator
-		void swap(Ice&); // copy-swap idiom
+		~Cure(); // destructor; consider virtual if it's a base class
+		Cure(); // default constructor
+		explicit Cure(const string&); // serializing constructor
+		Cure(const Cure&); // copy constructor
+		Cure& operator=(Cure); // copy-assignment operator
+		void swap(Cure&); // copy-swap idiom
 		string repr() const; // return string-serialized version of the object
 		operator string() const; // convert object to string
 	// </generated>
@@ -30,7 +30,7 @@ private:
 	static unsigned int _id_cntr;
 };
 
-template <> inline string repr(const Ice& value) { return value.repr(); }
-void swap(Ice&, Ice&) /* noexcept */;
-ostream& operator<<(ostream&, const Ice&);
+template <> inline string repr(const Cure& value) { return value.repr(); }
+void swap(Cure&, Cure&) /* noexcept */;
+ostream& operator<<(ostream&, const Cure&);
 // </GENERATED>

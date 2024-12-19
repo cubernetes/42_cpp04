@@ -4,8 +4,8 @@
 #include <string> /* std::string */
 #include <iostream> /* std::ostream */
 
+#include "AMateria.hpp"
 #include "repr.hpp" /* repr<T> */
-#include "helper.hpp"
 #include "ICharacter.hpp"
 
 using std::string;
@@ -17,7 +17,7 @@ public:
 		~Character(); // destructor; consider virtual if it's a base class
 		Character(); // default constructor
 		explicit Character(const string&);
-		Character(const string&, const AMateria*&, unsigned int); // serializing constructor
+		// Character(const string&, const AMateria*&, unsigned int); // serializing constructor
 		Character(const Character&); // copy constructor
 		Character& operator=(Character); // copy-assignment operator
 		void swap(Character&); // copy-swap idiom
@@ -29,21 +29,22 @@ public:
 		unsigned int get_n_inventory_items() const;
 
 		void setName(const string&);
-
-		template <typename T>
-		Character(const T& type, DeleteOverload = 0); // disallow accidental casting/conversion
 	// </generated>
 	
-	void equip(AMateria*) /* override */;
-	void unequip(int) /* override */;
-	void use(int, ICharacter&) /* override */;
+	void equip(AMateria*) /* override, equip item in an owning fashion */;
+	void borrow(AMateria*); /* equip item without managing it, this could be solved via unique_ptr or smth */
+
+	void unequip(unsigned int) /* override, unequip item that doesn't belong to you */;
+	AMateria* give(unsigned int) /* transfer ownership of item that belongs to you */;
+
+	void use(unsigned int, ICharacter&) /* override */;
 private:
-	unsigned int _id;
-	static unsigned int _id_cntr;
 	static const unsigned int _inventory_size = 4;
 	string _name;
 	AMateria* _inventory[_inventory_size];
-	unsigned int _n_inventory_items;
+	bool _itemOwnerships[_inventory_size];
+	unsigned int _id;
+	static unsigned int _id_cntr;
 };
 
 template <> inline string repr(const Character& value) { return value.repr(); }

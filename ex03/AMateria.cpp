@@ -20,7 +20,7 @@ AMateria::AMateria(const AMateria& other) : _type(other._type) { cout << ANSI_KW
 // Copy-assignment operator
 AMateria& AMateria::operator=(const AMateria& other) /* noexcept */ {
 	cout << ANSI_KWRD "AMateria" ANSI_PUNCT "& " ANSI_KWRD "AMateria" ANSI_PUNCT "::" ANSI_FUNC "operator" ANSI_PUNCT "=(" << ::repr(other) << ANSI_PUNCT ")" ANSI_RST "\n";
-	_type = other._type;
+	// _type = other._type; // subject says "NO"
 	return *this;
 }
 
@@ -41,3 +41,7 @@ AMateria::operator string() const { return ::repr(*this); }
 // Generated free functions
 ostream& operator<<(ostream& os, const AMateria& other) { return os << static_cast<string>(other); }
 // </GENERATED>
+
+void AMateria::use(ICharacter& target) {
+	cout << "* using " << _type << " on " << target.getName() << " *\n";
+}

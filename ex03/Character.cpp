@@ -1,8 +1,9 @@
 // <GENERATED>
-#include <iostream> /* std::cout, std::swap, std::ostream */
+#include <iostream> /* cout, std::swap, std::ostream */
 #include <string> /* std::string */
 #include <sstream> /* std::stringstream */
 
+#include "AMateria.hpp"
 #include "repr.hpp"
 #include "Character.hpp"
 
@@ -13,14 +14,25 @@ using std::ostream;
 using std::stringstream;
 
 // De- & Constructors
-Character::~Character() { cout << ANSI_PUNCT "~" << *this << '\n'; }
-Character::Character() : _name("Anonymous"), _inventory(), _n_inventory_items(), _id(_id_cntr++) { cout << ANSI_KWRD "Character" ANSI_PUNCT "() -> " << *this << '\n'; }
-Character::Character(string name) : _name(name), _inventory(), _n_inventory_items(), _id(_id_cntr++) { cout << ANSI_KWRD "Character" ANSI_PUNCT "(" << ::repr(name) << ANSI_PUNCT ") -> " << *this << '\n'; }
-// Character::Character(const string& name, const AMateria*& inventory, unsigned int n_inventory_items) : _name(name), _inventory(inventory), _n_inventory_items(n_inventory_items), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
-Character::Character(const Character& other) : _name(other._name), _n_inventory_items(other._n_inventory_items), _id(_id_cntr++) {
-	for (int i = 0; i < other._inventory_size; ++i)
-		_inventory[i] = other._inventory[i];
+Character::~Character() {
+	cout << ANSI_PUNCT "~" << *this << '\n';
+	for (unsigned int i(0); i < _inventory_size; ++i) {
+		if (_itemOwnerships[i])
+			delete _inventory[i];
+		_inventory[i] = NULL;
+	}
+}
+Character::Character() : _name("Anonymous"), _inventory(), _itemOwnerships(), _id(_id_cntr++) { cout << ANSI_KWRD "Character" ANSI_PUNCT "() -> " << *this << '\n'; }
+Character::Character(const string& name) : _name(name), _inventory(), _itemOwnerships(), _id(_id_cntr++) { cout << ANSI_KWRD "Character" ANSI_PUNCT "(" << ::repr(name) << ANSI_PUNCT ") -> " << *this << '\n'; }
+// Character::Character(const string& name, const AMateria*& inventory, unsigned int n_inventory_items) : _name(name), _inventory(inventory), _itemOwnerships(itemOwnerships), _id(_id_cntr++) { cout << *this << ANSI_PUNCT " -> " << *this << '\n'; }
+Character::Character(const Character& other) : _name(other._name), _id(_id_cntr++) {
 	cout << ANSI_KWRD "Character" ANSI_PUNCT "(" << ::repr(other) << ANSI_PUNCT ") -> " << *this << '\n';
+	for (unsigned int i = 0; i < other._inventory_size; ++i) {
+		if (_itemOwnerships[i])
+			delete _inventory[i];
+		_inventory[i] = other._inventory[i]->clone();
+		_itemOwnerships[i] = true;
+	}
 }
 
 // Copy-assignment operator (using copy-swap idiom)
@@ -33,7 +45,6 @@ Character& Character::operator=(Character other) /* noexcept */ {
 // Generated getters
 const string& Character::getName() const { return _name; }
 AMateria* const* Character::get_inventory() const { return _inventory; }
-unsigned int Character::get_n_inventory_items() const { return _n_inventory_items; }
 
 // Generated setters
 void Character::setName(const string& value) { _name = value; }
@@ -41,7 +52,7 @@ void Character::setName(const string& value) { _name = value; }
 // Generated member functions
 string Character::repr() const {
 	stringstream out;
-	out << ANSI_KWRD "Character" ANSI_PUNCT "(" << ::repr(_name) << ANSI_PUNCT ", " << ::repr(_inventory) << ANSI_PUNCT ", " << ::repr(_n_inventory_items) << ANSI_PUNCT ", " << ::repr(_id) << ANSI_PUNCT ")" ANSI_RST;
+	out << ANSI_KWRD "Character" ANSI_PUNCT "(" << ::repr(_name) << ANSI_PUNCT ", " << ::repr(_inventory, _inventory_size) << ANSI_PUNCT ", " << ::repr(_itemOwnerships, _inventory_size) << ANSI_PUNCT ", " << ::repr(_id) << ANSI_PUNCT ")" ANSI_RST;
 	return out.str();
 }
 void Character::swap(Character& other) /* noexcept */ {
@@ -51,7 +62,7 @@ void Character::swap(Character& other) /* noexcept */ {
 	cout << other << '\n';
 	::swap(_name, other._name);
 	::swap(_inventory, other._inventory);
-	::swap(_n_inventory_items, other._n_inventory_items);
+	::swap(_itemOwnerships, other._itemOwnerships);
 	cout << ANSI_CMT "swap done>" ANSI_RST "\n";
 }
 Character::operator string() const { return ::repr(*this); }
@@ -65,23 +76,69 @@ unsigned int Character::_id_cntr = 0;
 // </GENERATED>
 
 void Character::equip(AMateria* m) {
-	if (_n_inventory_items <= _inventory_size) {
-		_inventory[_n_inventory_items] = m;
-		++_n_inventory_items;
+	for (unsigned int i = 0; i < _inventory_size; ++i) {
+		if (_inventory[i] == NULL) {
+			_inventory[i] = m;
+			_itemOwnerships[i] = true;
+			return;
+		}
 	}
+	cout << "Can't equip, there are already 4 items in " << _name << "'s inventory\n";
 }
-void Character::unequip(int idx) {
-	if (0 <= idx && idx < _n_inventory_items) {
-		while (idx < _inventory_size - 1 && _inventory[idx] != NULL) {
-			_inventory[idx] = _inventory[idx + 1];
-			++idx;
+
+void Character::borrow(AMateria* m) {
+	for (unsigned int i = 0; i < _inventory_size; ++i) {
+		if (_inventory[i] == NULL) {
+			_inventory[i] = m;
+			_itemOwnerships[i] = false;
+			return;
+		}
+	}
+	cout << "Can't borrow, there are already 4 items in " << _name << "'s inventory\n";
+}
+
+/* we're not managing the floor, either the caller manages the Materias themself,
+ * or they make a floor class that manages the Materias. Character shouldn't worry */
+void Character::unequip(unsigned int idx) {
+	if (0 <= idx && idx < _inventory_size) {
+		if (_itemOwnerships[idx]) {
+			cout << "Cannot unequip object that belongs to you! What do you expect? A SingletonFloorManager class? Use give() if you want to transfer item ownership\n";
+			return;
+		} else if (_inventory[idx] == NULL) {
+			// cout << "There's no item to unequip at index " << idx << " in " << _name << "'s inventory\n";
+			return;
 		}
 		_inventory[idx] = NULL;
-		--_n_inventory_items;
-	}
+		_itemOwnerships[idx] = false;
+	} else
+		cout << "There's no inventory slot " << idx << " in " << _name << "'s inventory\n";
 }
-void Character::use(int idx, ICharacter& target) {
-	if (0 <= idx && idx < _n_inventory_items && _inventory[idx] != NULL) {
+
+AMateria* Character::give(unsigned int idx) {
+	if (0 <= idx && idx < _inventory_size) {
+		if (!_itemOwnerships[idx]) {
+			cout << "Cannot give object that doesn't belong to you! You wouldn't lend something that you yourself borrowed, right?\n";
+			return NULL;
+		} else if (_inventory[idx] == NULL) {
+			// cout << "There's no item to unequip at index " << idx << " in " << _name << "'s inventory\n";
+			return NULL;
+		}
+		AMateria* ret = _inventory[idx];
+		_inventory[idx] = NULL;
+		_itemOwnerships[idx] = false;
+		return ret;
+	} else
+		cout << "There's no inventory slot " << idx << " in " << _name << "'s inventory\n";
+	return NULL;
+}
+
+void Character::use(unsigned int idx, ICharacter& target) {
+	if (0 <= idx && idx < _inventory_size) {
+		if (_inventory[idx] == NULL) {
+			cout << "There's no item to use at index " << idx << " in " << _name << "'s inventory\n";
+			return;
+		}
 		_inventory[idx]->use(target);
-	}
+	} else
+		cout << "There's no inventory slot " << idx << " in " << _name << "'s inventory\n";
 }

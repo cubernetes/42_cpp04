@@ -58,6 +58,10 @@ vpath %.$(EXT) .
 SRC += main.cpp
 SRC += repr.cpp
 SRC += AMateria.cpp
+SRC += Ice.cpp
+SRC += Cure.cpp
+SRC += Character.cpp
+SRC += MateriaSource.cpp
 
 # object vars
 OBJ := $(SRC:.$(EXT)=.o)
