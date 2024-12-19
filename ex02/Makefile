@@ -7,7 +7,7 @@ NAME := a.out
 EXT := cpp
 
 # tools
-CXX := g++
+CXX := c++
 RM := /bin/rm -f
 MKDIR := /bin/mkdir -p
 
